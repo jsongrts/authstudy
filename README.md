@@ -12,15 +12,15 @@ This toy project shows
 We should do 3 things to enable BASIC support in Tomcat 8 (I assume we store the username/password in database):
 * create a users table and roles table in the database (note that table names are configurable) 
 * edit server.xml to contain a Realm element
-
+```
 <Realm className="org.apache.catalina.realm.JDBCRealm"
                        driverName="com.mysql.jdbc.Driver"
                        connectionURL="jdbc:mysql://localhost/stockapp?user=root"
                        userTable="user" userNameCol="name" userCredCol="pass"
                        userRoleTable="role" roleNameCol="role_name" />
-
+```
 * edit web.xml of your web application to tell Tomcat that accesses to this web application needs authencation
-
+```
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
@@ -45,3 +45,4 @@ We should do 3 things to enable BASIC support in Tomcat 8 (I assume we store the
         </user-data-constraint>
     </security-constraint>
 </web-app>
+```
