@@ -1,22 +1,20 @@
 package com.jsongrts.authstudy.rest.resource;
 
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.jsongrts.authstudy.AuthStudyException;
 import com.jsongrts.authstudy.db.DbUtils;
 import com.jsongrts.authstudy.db.Symbol;
 import com.jsongrts.authstudy.db.SymbolDao;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by jsong on 2/10/16.
@@ -33,6 +31,25 @@ public class SymbolResource {
             conn.setAutoCommit(true);
             SymbolDao.add(conn, s);
             return Response.created(URI.create("/symbols/" + s.id())).build();
+        }
+        catch (SQLException e) {
+            throw new AuthStudyException(e);
+        }
+        finally {
+            DbUtils.closeQuietly(conn);
+        }
+    }
+
+
+    @GET
+    @Produces("application/json")
+    public String getAll() {
+        Connection conn = DbUtils.getConnection();
+        try {
+            conn.setAutoCommit(true);
+            ArrayList<Symbol> symbols = SymbolDao.getAll(conn);
+            Gson gson = new GsonBuilder().setFieldNamingStrategy(new LmFieldNameingStrategy()).create();
+            return gson.toJson(symbols);
         }
         catch (SQLException e) {
             throw new AuthStudyException(e);
