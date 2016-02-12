@@ -5,3 +5,4 @@ This toy project shows
 * gradle file for web application
 * a simple home-made ORM framework
 * how to use Gson
+* how to setup server.xml and web.xml to enable BASIC authentication
